@@ -6,6 +6,6 @@ int main()
 {
 	Device  dev(DEV_NAME);
 
-	dev.comm();
+	dev.loopTest();
 	return 0;
 }

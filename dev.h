@@ -10,6 +10,9 @@ public:
 	~Device();
 
 	int comm();
+	void loopTest();
+private:
+	void printBuf(const char *info, char *buf, int len);
 
 private:
 	Serial *serial;
