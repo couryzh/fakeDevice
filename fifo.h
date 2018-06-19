@@ -10,9 +10,18 @@ public:
 	int recv(char *buf, int bufLen);
 
 private:
+	void initRdTerminal(const char *dev);
+	void initWrTerminal(const char *dev);
+
+	bool isExist(const char *dev);
+	void rdPathSuffix(char **suffix);
+	void wrPathSuffix(char **suffix);
+
+private:
 #define MAX_PATH_LEN 64
-	int fd;
-	char path[MAX_PATH_LEN];
+	int rfd;
+	int wfd;
+	char path[2][MAX_PATH_LEN];
 };
 
 #endif

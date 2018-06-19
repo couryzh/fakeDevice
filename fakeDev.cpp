@@ -1,11 +1,11 @@
 #include "dev.h"
 
-#define DEV_NAME "/dev/ttyS0"
+#define DEV_NAME "/tmp/fifo"
 
 int main()
 {
 	Device  dev(DEV_NAME);
 
-	dev.loopTest();
+	dev.comm();
 	return 0;
 }

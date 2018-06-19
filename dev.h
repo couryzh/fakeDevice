@@ -1,8 +1,8 @@
 #ifndef DEV_H
 #define DEV_H
 
-#include "serial.h"
-#include "simpleProtocol.h"
+#include "fifo.h"
+#include "caseChangeProtocol.h"
 
 class Device {
 public:
@@ -10,12 +10,12 @@ public:
 	~Device();
 
 	int comm();
-	void loopTest();
+
 private:
 	void printBuf(const char *info, char *buf, int len);
 
 private:
-	Serial *serial;
+	Fifo * fifo;
 	Protocol *proto;
 
 	char recvBuf[64];

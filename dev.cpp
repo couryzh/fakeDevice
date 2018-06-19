@@ -4,28 +4,35 @@
 #include <unistd.h>
 #include "dev.h"
 
-Device::Device(const char *serialDev)
+Device::Device(const char *path)
 {
-	serial = new Serial(serialDev);
-	proto = new SimpleProtocol();
+	fifo = new Fifo(path);
+	proto = new CaseChangeProtocol();
 }
 
 
 Device::~Device()
 {
-	delete serial;
+	delete fifo;
 	delete proto;
 }
 
 int Device::comm()
 {
 	int recvLen, sendLen;
+
 	while (1) {
-		recvLen = serial->recv(recvBuf, 64);	
+		sleep(1);
+		recvLen = fifo->recv(recvBuf, 64);	
+		if (recvLen <= 0) continue;
+		printf("recvLen=%d\n", recvLen);
+		printBuf("recv", recvBuf, recvLen);
 
 		sendLen = proto->handle(recvBuf, recvLen, sendBuf);
 
-		serial->send(sendBuf, sendLen);
+		printf("sendLen=%d\n", sendLen);
+		printBuf("send", sendBuf, sendLen);
+		fifo->send(sendBuf, sendLen);
 	}
 }
 
@@ -38,20 +45,3 @@ void Device::printBuf(const char *info, char *buf, int len)
 	printf("\n");
 }
 
-void Device::loopTest()
-{
-	time_t t;
-	unsigned data;
-	while (1) {
-		t = time(NULL);
-		data = (unsigned)t;
-		memcpy(sendBuf, &data, sizeof(data));
-		serial->send(sendBuf, sizeof(data));	
-		printBuf("send", sendBuf, sizeof(data));
-
-		int recvLen = serial->recv(recvBuf, 64);
-		printBuf("recv", recvBuf, recvLen);
-		
-		sleep(2);
-	}
-}
