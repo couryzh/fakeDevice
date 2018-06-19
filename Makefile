@@ -2,14 +2,16 @@ CC = g++
 CXXFLAGS = -Wall -g
 LDFLAGS = 
 
+OBJ_PATH=obj
 all: bin/fakeDev
 
-bin/fakeDev: fakeDev.o dev.o simpleProtocol.o caseChangeProtocol.o fifo.o
+bin/fakeDev: $(OBJ_PATH)/fakeDev.o $(OBJ_PATH)/dev.o $(OBJ_PATH)/serial.o \
+	$(OBJ_PATH)/simpleProtocol.o $(OBJ_PATH)/caseChangeProtocol.o $(OBJ_PATH)/fifo.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
-.cpp.o:
+$(OBJ_PATH)/%.o: %.cpp
 	$(CC) -c $(CXXFLAGS) -o $@ $<
 
 clean:
-	rm  *.o bin/fakeDev
+	rm  $(OBJ_PATH)/*.o bin/fakeDev
 
