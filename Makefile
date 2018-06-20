@@ -4,7 +4,7 @@ LDFLAGS =
 
 all: bin/fakeDev
 
-bin/fakeDev: fakeDev.o dev.o serial.o simpleProtocol.o
+bin/fakeDev: fakeDev.o dev.o serial.o simpleProtocol.o fifo.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 .cpp.o:
